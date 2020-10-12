@@ -2,7 +2,7 @@
 name = "klickbrick-cli"
 version = "0.1.0"
 description = ""
-authors = ["Marcel van den Brink <m.vandenbrink@bva-auctions.com>"]
+authors = ["Marcel van den Brink <m.vandenbrink@gmail.com>"]
 
 [tool.poetry.dependencies]
 python = "^3.7"
