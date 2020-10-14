@@ -5,7 +5,19 @@ python:
 
 install:
   - pip install behave
+  - pip install poetry
+
+before_script:
+  - poetry config repositories.testpypi https://test.pypi.org/legacy/
+  - poetry config http-basic.testpypi $TESTPYPI_USERNAME $TESTPYPI_PASSWORD
 
 script:
   - python -m unittest discover
   - behave
+
+before_deploy:
+  - poetry build
+
+deploy:
+  - provider: script
+    script: poetry publish -r testpypi
