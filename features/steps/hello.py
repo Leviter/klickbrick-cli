@@ -7,9 +7,14 @@ def step_impl(context):
     context.output = hello.get_greeting("")
 
 
-@when(u'I start the program with a name parameter having the value Marcel')
+@when(u'I start the program with the hello parameter')
 def step_impl(context):
-    context.output = hello.get_greeting(["--name", "Marcel"])
+    context.output = hello.get_greeting(["hello"])
+
+
+@when(u'I start the program with the hello parameter and a name parameter having the value Marcel')
+def step_impl(context):
+    context.output = hello.get_greeting(["hello", "--name", "Marcel"])
 
 
 @then(u'it prints "{text}"')
