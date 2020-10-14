@@ -9,7 +9,7 @@ install:
 
 before_script:
   - poetry config repositories.testpypi https://test.pypi.org/legacy/
-  - poetry config http-basic.testpypi $TESTPYPI_USERNAME $TESTPYPI_PASSWORD
+  - poetry config http-basic.testpypi "${TESTPYPI_USERNAME}" "{$TESTPYPI_PASSWORD}"
 
 script:
   - python -m unittest discover
