@@ -11,6 +11,7 @@ import sys
 def get_args(args):
     """Get the command-line arguments"""
     parser = argparse.ArgumentParser(description='Say hello')
+    parser.add_argument('hello', metavar='hello', type=str, default='')
     parser.add_argument('-n', '--name', metavar='name', default="world", help='name to greet')
     return parser.parse_args(args)
 
@@ -18,7 +19,8 @@ def get_args(args):
 def get_greeting(arguments):
     """Get the string that can be used to print on screen"""
     args = get_args(arguments)
-    return 'hello ' + args.name
+    if args.hello == 'hello':
+        return 'hello ' + args.name
 
 
 def main():
