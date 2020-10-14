@@ -17,4 +17,4 @@ script:
 
 deploy:
   - provider: script
-    script: poetry publish -r testpypi --build
+    script: poetry publish -r testpypi --build --username=$TESTPYPI_USERNAME --password=$TESTPYPI_PASSWORD
