@@ -15,9 +15,6 @@ script:
   - python -m unittest discover
   - behave
 
-before_deploy:
-  - poetry build
-
 deploy:
   - provider: script
-    script: poetry publish -r testpypi
+    script: poetry publish -r testpypi --build
