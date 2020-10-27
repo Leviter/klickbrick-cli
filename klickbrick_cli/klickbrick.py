@@ -89,14 +89,12 @@ def run(arguments):
     if args.checklist:
         checklist_write()
 
-    if args.it_request:
+    if args.install:
         installer_install()
-
-    return args.checklist
 
 
 def main():
-    print(run(sys.argv[1:]))
+    run(sys.argv[1:])
 
 
 if __name__ == '__main__':
