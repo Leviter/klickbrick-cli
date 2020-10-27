@@ -4,11 +4,53 @@ Author: Marcel van den Brink <marcel.vandenbrink@gmail.com>
 Purpose: Onboard new employees
 """
 
-import checklist
-import installer
-
 import argparse
 import sys
+import subprocess
+
+
+def checklist_write():
+    file = "checklist.md"
+    output = open(file, 'w')
+
+    output.write("#Onboarding checklist for new employees\n")
+    output.write('- [ ] introduce with team members\n')
+    output.write('- [ ] introduce with department\n')
+    output.write('- [ ] get some coffee\n')
+
+    output.close()
+
+
+def show_install_tool_name(name):
+    print('\n#### Installing [{}]...'.format(name))
+
+
+def show_configure_tool_name(name):
+    print('\n#### Configuring [{}]...'.format(name))
+
+
+def install_brew():
+    show_install_tool_name('brew')
+    cmd = "echo '/bin/bash -c \"$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh\"'"
+    print(subprocess.check_output(cmd, shell=True).decode('utf-8'), end='')
+
+
+def install_git():
+    show_install_tool_name('git')
+    cmd = "echo 'brew install git'"
+    print(subprocess.check_output(cmd, shell=True).decode('utf-8'), end='')
+
+
+def configure_git():
+    show_configure_tool_name('git')
+    cmd = "echo 'git config --global resources/git_message.template ~/.gitmessage.txt'"
+    print(subprocess.check_output(cmd, shell=True).decode('utf-8'), end='')
+
+
+def installer_install():
+    install_brew()
+    install_git()
+    configure_git()
 
 
 def get_argument_parser():
@@ -45,10 +87,10 @@ def run(arguments):
         sys.exit(0)
 
     if args.checklist:
-        checklist.write()
+        checklist_write()
 
     if args.it_request:
-        installer.install()
+        installer_install()
 
     return args.checklist
 
