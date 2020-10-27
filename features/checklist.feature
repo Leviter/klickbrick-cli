@@ -4,5 +4,6 @@ Feature: Onboarding of new employees using a checklist
 
   Scenario: The checklist is generated
     Given the command
+    And markdown file is absent
     When passed the checklist parameter
     Then a markdown file is created
