@@ -1,3 +1,5 @@
+import sys
+
 from behave import when, then
 from klickbrick_cli import klickbrick
 
@@ -9,5 +11,5 @@ def step_impl(context, firstname, lastname):
 
 @then('name "{name}" is in the email')
 def step_impl(context, name):
-    output = context.stdout_mock.getvalue()
+    output = sys.stdout.getvalue().strip()
     assert name in output
