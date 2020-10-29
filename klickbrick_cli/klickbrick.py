@@ -9,6 +9,10 @@ import sys
 import subprocess
 
 
+def email_write(firstname, lastname):
+    print(firstname, lastname)
+
+
 def checklist_write():
     file = "checklist.md"
     output = open(file, 'w')
@@ -91,6 +95,9 @@ def run(arguments):
 
     if args.install:
         installer_install()
+
+    if args.it_request:
+        email_write(args.firstname, args.lastname)
 
 
 def main():

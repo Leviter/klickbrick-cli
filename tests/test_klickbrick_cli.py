@@ -1,5 +1,16 @@
-from klickbrick_cli import __version__
+from unittest import TestCase
+
+from klickbrick_cli import klickbrick
 
 
-def test_version():
-    assert __version__ == '0.1.0'
+class Test(TestCase):
+    def test_get_hello_greeting(self):
+        print(klickbrick.run(['onboard']))
+        self.assertEqual(klickbrick.run(['hello']), "hello world")
+
+    def test_get_named_greeting(self):
+        self.assertEqual(klickbrick.run(['hello', '--name', 'Charlie']), "hello Charlie")
+
+    def test_get_empty_name_greeting(self):
+        self.assertEqual(klickbrick.run(['hello', '--name', '']), "hello ")
+
