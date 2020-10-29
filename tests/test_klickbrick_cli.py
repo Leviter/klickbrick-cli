@@ -1,8 +1,10 @@
 from unittest import TestCase
+from unittest.case import skip
 
 from klickbrick_cli import klickbrick
 
 
+@skip
 class Test(TestCase):
     def test_get_hello_greeting(self):
         print(klickbrick.run(['onboard']))
