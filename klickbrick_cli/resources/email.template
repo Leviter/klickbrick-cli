@@ -1,0 +1,9 @@
+Dear IT,
+
+I am a new employee and would like you to add me to all systems. Here is some information you might need:
+
+First name : {{firstname}}
+Last name : {{lastname}}
+
+With kind regards,
+{{firstname}} {{lastname}}

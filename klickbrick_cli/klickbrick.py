@@ -7,10 +7,26 @@ Purpose: Onboard new employees
 import argparse
 import sys
 import subprocess
+import inspect
+import os.path
+
+
+def email_template_replace(template, firstname, lastname):
+    template = template.replace('{{firstname}}', firstname)
+    template = template.replace('{{lastname}}', lastname)
+    return template
 
 
 def email_write(firstname, lastname):
-    print(firstname, lastname)
+    filename = inspect.getframeinfo(inspect.currentframe()).filename
+    path = os.path.dirname(os.path.abspath(filename))
+    template_file = open(path + "/resources/email.template", 'r')
+    template = template_file.read()
+    template_file.close()
+
+    email = email_template_replace(template, firstname, lastname)
+
+    print(email)
 
 
 def checklist_write():
