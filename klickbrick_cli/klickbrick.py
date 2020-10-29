@@ -69,8 +69,8 @@ def get_argument_parser():
     it_request_group = parser.add_argument_group(title='IT request')
     it_request_group.add_argument('-t', '--it-request', action='store_true', default=False,
                                   help='Generate an email to be sent to IT')
-    it_request_group.add_argument('--first-name', metavar='firstname', help='The first name')
-    it_request_group.add_argument('--last-name', metavar='lastname', help='The last name')
+    it_request_group.add_argument('--first-name', help='The first name')
+    it_request_group.add_argument('--last-name', help='The last name')
 
     install_group = parser.add_argument_group(title='Install tools')
     install_group.add_argument('-i', '--install', metavar='install', help='Install a set of developer tools')
@@ -97,7 +97,7 @@ def run(arguments):
         installer_install()
 
     if args.it_request:
-        email_write(args.firstname, args.lastname)
+        email_write(args.first_name, args.last_name)
 
 
 def main():
