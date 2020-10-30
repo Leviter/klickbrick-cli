@@ -25,7 +25,10 @@ def email_write(firstname, lastname):
     template_file.close()
 
     email = email_template_replace(template, firstname, lastname)
+    send_email(email)
 
+
+def send_email(email):
     receiver = "it@mycompany.org"
     subject = "New employee"
     command = "mailto:{}?subject={}&body={}".format(receiver, subject, email)
