@@ -25,6 +25,7 @@ def email_write(firstname, lastname):
     template_file.close()
 
     email = email_template_replace(template, firstname, lastname)
+    print(email)
     send_email(email)
 
 
