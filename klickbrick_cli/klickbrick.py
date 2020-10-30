@@ -26,7 +26,10 @@ def email_write(firstname, lastname):
 
     email = email_template_replace(template, firstname, lastname)
 
-    print(email)
+    receiver = "it@mycompany.org"
+    subject = "New employee"
+    command = "mailto:{}?subject={}&body={}".format(receiver, subject, email)
+    subprocess.Popen(['open', command])
 
 
 def checklist_write():
@@ -105,6 +108,11 @@ def run(arguments):
     if args.onboard == '':
         parse_arguments(argument_parser, ['-h'])
         sys.exit(0)
+
+    if not args.checklist and not args.install and not args.it_request:
+        checklist_write()
+        installer_install()
+        email_write(args.first_name, args.last_name)
 
     if args.checklist:
         checklist_write()
