@@ -12,15 +12,15 @@ import os.path
 
 
 def email_template_replace(template, firstname, lastname):
-    template = template.replace('{{firstname}}', firstname)
-    template = template.replace('{{lastname}}', lastname)
+    template = template.replace("{{firstname}}", firstname)
+    template = template.replace("{{lastname}}", lastname)
     return template
 
 
 def email_write(firstname, lastname):
     filename = inspect.getframeinfo(inspect.currentframe()).filename
     path = os.path.dirname(os.path.abspath(filename))
-    template_file = open(path + "/resources/email.template", 'r')
+    template_file = open(path + "/resources/email.template", "r")
     template = template_file.read()
     template_file.close()
 
@@ -33,45 +33,45 @@ def send_email(email):
     receiver = "it@mycompany.org"
     subject = "New employee"
     command = "mailto:{}?subject={}&body={}".format(receiver, subject, email)
-    subprocess.Popen(['open', command])
+    subprocess.Popen(["open", command])
 
 
 def checklist_write():
     file = "checklist.md"
-    output = open(file, 'w')
+    output = open(file, "w")
 
     output.write("#Onboarding checklist for new employees\n")
-    output.write('- [ ] introduce with team members\n')
-    output.write('- [ ] introduce with department\n')
-    output.write('- [ ] get some coffee\n')
+    output.write("- [ ] introduce with team members\n")
+    output.write("- [ ] introduce with department\n")
+    output.write("- [ ] get some coffee\n")
 
     output.close()
 
 
 def show_install_tool_name(name):
-    print('\n#### Installing [{}]...'.format(name))
+    print("\n#### Installing [{}]...".format(name))
 
 
 def show_configure_tool_name(name):
-    print('\n#### Configuring [{}]...'.format(name))
+    print("\n#### Configuring [{}]...".format(name))
 
 
 def install_brew():
-    show_install_tool_name('brew')
+    show_install_tool_name("brew")
     cmd = "echo '/bin/bash -c \"$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh\"'"
-    print(subprocess.check_output(cmd, shell=True).decode('utf-8'), end='')
+    print(subprocess.check_output(cmd, shell=True).decode("utf-8"), end="")
 
 
 def install_git():
-    show_install_tool_name('git')
+    show_install_tool_name("git")
     cmd = "echo 'brew install git'"
-    print(subprocess.check_output(cmd, shell=True).decode('utf-8'), end='')
+    print(subprocess.check_output(cmd, shell=True).decode("utf-8"), end="")
 
 
 def configure_git():
-    show_configure_tool_name('git')
+    show_configure_tool_name("git")
     cmd = "echo 'git config --global resources/git_message.template ~/.gitmessage.txt'"
-    print(subprocess.check_output(cmd, shell=True).decode('utf-8'), end='')
+    print(subprocess.check_output(cmd, shell=True).decode("utf-8"), end="")
 
 
 def installer_install():
@@ -81,22 +81,32 @@ def installer_install():
 
 
 def get_argument_parser():
-    parser = argparse.ArgumentParser(description='Help with onboarding new employees')
+    parser = argparse.ArgumentParser(description="Help with onboarding new employees")
 
-    parser.add_argument('onboard', metavar='onboard', type=str, default='')
+    parser.add_argument("onboard", metavar="onboard", type=str, default="")
 
-    checklist_group = parser.add_argument_group(title='Checklist')
-    checklist_group.add_argument('-c', '--checklist', action="store_true", default=False,
-                                 help='Generate a checklist with manual steps')
+    checklist_group = parser.add_argument_group(title="Checklist")
+    checklist_group.add_argument(
+        "-c",
+        "--checklist",
+        action="store_true",
+        default=False,
+        help="Generate a checklist with manual steps",
+    )
 
-    it_request_group = parser.add_argument_group(title='IT request')
-    it_request_group.add_argument('-t', '--it-request', action='store_true', default=False,
-                                  help='Generate an email to be sent to IT')
-    it_request_group.add_argument('--first-name', help='The first name')
-    it_request_group.add_argument('--last-name', help='The last name')
+    it_request_group = parser.add_argument_group(title="IT request")
+    it_request_group.add_argument(
+        "-t",
+        "--it-request",
+        action="store_true",
+        default=False,
+        help="Generate an email to be sent to IT",
+    )
+    it_request_group.add_argument("--first-name", help="The first name")
+    it_request_group.add_argument("--last-name", help="The last name")
 
-    install_group = parser.add_argument_group(title='Install tools')
-    install_group.add_argument('-i', '--install', metavar='install', help='Install a set of developer tools')
+    install_group = parser.add_argument_group(title="Install tools")
+    install_group.add_argument("-i", "--install", metavar="install", help="Install a set of developer tools")
 
     return parser
 
@@ -109,8 +119,8 @@ def parse_arguments(parser, args):
 def run(arguments):
     argument_parser = get_argument_parser()
     args = parse_arguments(argument_parser, arguments)
-    if args.onboard == '':
-        parse_arguments(argument_parser, ['-h'])
+    if args.onboard == "":
+        parse_arguments(argument_parser, ["-h"])
         sys.exit(0)
 
     if not args.checklist and not args.install and not args.it_request:
@@ -132,5 +142,5 @@ def main():
     run(sys.argv[1:])
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
