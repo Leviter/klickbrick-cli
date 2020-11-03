@@ -6,11 +6,15 @@ python:
 install:
   - pip install behave
   - pip install poetry
+  - pip install black
+  - pip install flake8
 
 before_script:
   - poetry config repositories.testpypi https://test.pypi.org/legacy/
 
 script:
+  - black
+  - flake8
   - python -m unittest discover
   - behave
   - poetry build
