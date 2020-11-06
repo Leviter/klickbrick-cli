@@ -1,14 +1,16 @@
 from behave import given, when, then
 from klickbrick_cli import klickbrick
+from io import StringIO
 
 import os.path
+import sys
 
 CHECKLIST_FILE = "checklist.md"
 
 
 @given("the command")
 def step_impl(context):
-    return
+    sys.stdout = StringIO()
 
 
 @given("markdown file is absent")

@@ -10,6 +10,8 @@ import subprocess
 import inspect
 import os.path
 
+from shutil import copyfile
+
 
 def email_template_replace(template, firstname, lastname):
     template = template.replace("{{firstname}}", firstname)
@@ -130,8 +132,22 @@ def get_onboard_argument_parser():
     return parser
 
 
+def get_init_argument_parser():
+    parser = argparse.ArgumentParser(description="Initialise a new project")
+
+    parser.add_argument("-n", "--name", required=True, help="The name of the project")
+    parser.add_argument("-p", "--path", default=os.getcwd(), help="The path where the project will be stored under")
+
+    return parser
+
+
 def onboard(arguments):
     parser = get_onboard_argument_parser()
+
+    if len(arguments) == 1 and (arguments[0] == "-h" or arguments[0] == "--help"):
+        parser.print_help()
+        return
+
     args = parser.parse_args(arguments)
 
     if not args.checklist and not args.install and not args.it_request:
@@ -149,12 +165,38 @@ def onboard(arguments):
         email_write(args.first_name, args.last_name)
 
 
+def init(arguments):
+    parser = get_init_argument_parser()
+
+    if len(arguments) == 0:
+        parser.print_help()
+        return
+
+    args = parser.parse_args(arguments)
+
+    path = args.path + os.path.sep + args.name
+
+    if os.path.isdir(path):
+        print("There already is a directory present with this name: {}".format(path))
+        print("Bailing out...")
+        return
+
+    os.makedirs(path)
+    subprocess.run(["git", "init"], cwd=path)
+
+    filename = inspect.getframeinfo(inspect.currentframe()).filename
+    current_path = os.path.dirname(os.path.abspath(filename)) + os.sep + "resources"
+
+    copyfile(current_path + os.sep + "CONTRIBUTING.md", path + os.sep + "CONTRIBUTING.md")
+    copyfile(current_path + os.sep + "README.md", path + os.sep + "README.md")
+
+
 def help(arguments):
     parser = get_help_argument_parser()
 
     if len(arguments) == 0:
         parser.print_help()
-        sys.exit(1)
+        return
 
     args = parser.parse_args(arguments)
     run_command(args.help, ["-h"])
