@@ -1,6 +1,7 @@
-/.idea/
-/dist/
-/venv/
-__pycache__/
+/.idea
+/dist
+/venv
+/projects
+__pycache__
 
 checklist.md
