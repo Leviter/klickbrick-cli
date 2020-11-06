@@ -18,6 +18,9 @@ def email_template_replace(template, firstname, lastname):
 
 
 def email_write(firstname, lastname):
+    if firstname is None or lastname is None:
+        raise ValueError("Missing firstname and/or lastname! Cannot create IT request")
+
     filename = inspect.getframeinfo(inspect.currentframe()).filename
     path = os.path.dirname(os.path.abspath(filename))
     template_file = open(path + "/resources/email.template", "r")
@@ -80,10 +83,26 @@ def installer_install():
     configure_git()
 
 
-def get_argument_parser():
-    parser = argparse.ArgumentParser(description="Help with onboarding new employees")
+def get_commands_parser():
+    parser = argparse.ArgumentParser(description="The klickbrick application")
 
-    parser.add_argument("onboard", metavar="onboard", type=str, default="")
+    parser.add_argument("onboard", nargs="?", help="Start onboarding people")
+    parser.add_argument("help", nargs="?", help="Display help on commands that can be used")
+
+    return parser
+
+
+def get_help_argument_parser():
+    parser = argparse.ArgumentParser(description="Help on the klickbrick application")
+
+    parser.add_argument("help", help="Get help on the help command")
+    parser.add_argument("command", nargs="?", choices=["onboard"], help="Get help on given command")
+
+    return parser
+
+
+def get_onboard_argument_parser():
+    parser = argparse.ArgumentParser(description="Help with onboarding new employees")
 
     checklist_group = parser.add_argument_group(title="Checklist")
     checklist_group.add_argument(
@@ -111,17 +130,9 @@ def get_argument_parser():
     return parser
 
 
-def parse_arguments(parser, args):
-    """Get the command-line arguments"""
-    return parser.parse_args(args)
-
-
-def run(arguments):
-    argument_parser = get_argument_parser()
-    args = parse_arguments(argument_parser, arguments)
-    if args.onboard == "":
-        parse_arguments(argument_parser, ["-h"])
-        sys.exit(0)
+def onboard(arguments):
+    parser = get_onboard_argument_parser()
+    args = parser.parse_args(arguments)
 
     if not args.checklist and not args.install and not args.it_request:
         checklist_write()
@@ -136,6 +147,48 @@ def run(arguments):
 
     if args.it_request:
         email_write(args.first_name, args.last_name)
+
+
+def help(arguments):
+    parser = get_help_argument_parser()
+
+    if len(arguments) == 0:
+        parser.print_help()
+        sys.exit(1)
+
+    args = parser.parse_args(arguments)
+    run_command(args.help, ["-h"])
+
+
+def run(arguments):
+    number_of_arguments = len(arguments)
+
+    if number_of_arguments == 0:
+        run_command(None, None)
+    elif number_of_arguments == 1:
+        run_command(arguments[0], [])
+    else:
+        run_command(arguments[0], arguments[1:])
+
+
+def run_command(command, arguments):
+    parser = get_commands_parser()
+    args = parser.parse_args([command])
+
+    if args.onboard is None and args.help is None:
+        parser.print_help()
+        sys.exit(1)
+
+    call_method(command, arguments)
+
+
+def call_method(command, arguments):
+    possibles = globals().copy()
+    possibles.update(locals())
+    method = possibles.get(command)
+    if not method:
+        raise NotImplementedError("Method %s not implemented" % command)
+    method(arguments)
 
 
 def main():
