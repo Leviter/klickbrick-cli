@@ -1,0 +1,54 @@
+swagger: "2.0"
+info:
+  description: "Server that is used to store events coming from the KlickBrick CLI tool."
+  version: "1.0.0"
+  title: "Event consumer"
+  contact:
+    email: "marcel.vandenbrink@gmail.com"
+host: "localhost"
+basePath: "/"
+tags:
+  - name: "event"
+    description: "Everything about Events"
+paths:
+  /event:
+    post:
+      tags:
+        - "event"
+      summary: "Add a new event"
+      description: ""
+      operationId: "app.add_event"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "body"
+          description: "Event that needs to be added"
+          required: true
+          schema:
+            $ref: "#/definitions/Event"
+      responses:
+        "405":
+          description: "Invalid input"
+        "202":
+          description: "No content"
+definitions:
+  Event:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+      command:
+        type: "string"
+      parameters:
+        type: "string"
+      os:
+        type: "string"
+      python_version:
+        type: "string"
+      date:
+        type: "string"
+        format: "date-time"
