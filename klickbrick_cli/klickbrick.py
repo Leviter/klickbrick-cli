@@ -9,6 +9,7 @@ import sys
 import subprocess
 import inspect
 import os.path
+import requests
 
 from shutil import copyfile
 
@@ -222,6 +223,7 @@ def run_command(command, arguments):
         sys.exit(1)
 
     call_method(command, arguments)
+    send_event({"command":"".join(command), "parameters":"".join(arguments), "os":"macOS", "python_version:":"3.9"})
 
 
 def call_method(command, arguments):
@@ -231,6 +233,17 @@ def call_method(command, arguments):
     if not method:
         raise NotImplementedError("Method %s not implemented" % command)
     method(arguments)
+
+
+def send_event(data):
+    url = 'http://localhost:8080/event'
+    try:
+        response = requests.post(url, json=data, timeout=1000)
+        print(response.status_code)
+    except requests.exceptions.Timeout as ex:
+        print(str(ex))
+    except requests.exceptions.ConnectionError as ex:
+        print(str(ex))
 
 
 def main():
