@@ -17,7 +17,6 @@ paths:
         - "event"
       summary: "Add a new event"
       description: ""
-      operationId: "events_server.add_event"
       consumes:
         - "application/json"
       produces:
